@@ -14,6 +14,11 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {           
+      type: String,
+      enum: ["Read", "Unread", "Reading"], 
+      default: "Unread",          
+    },
   },
   {
     timestamps: true, 

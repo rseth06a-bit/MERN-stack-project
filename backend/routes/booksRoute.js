@@ -97,6 +97,35 @@ router.post("/", async (request, response) => {
           response.status(500).send({message: error.message});
       }
   });
+  
+  //route for updating book status
+  // PATCH route for updating book status
+router.patch('/:id/status', async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { status } = request.body;
+  
+      // Validate the status value
+      if (!['Read', 'Unread', 'Reading'].includes(status)) {
+        return response.status(400).json({ message: 'Invalid status value' });
+      }
+  
+      const updatedBook = await Book.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true } // return updated book
+      );
+  
+      if (!updatedBook) {
+        return response.status(404).json({ message: 'Book not found' });
+      }
+  
+      return response.status(200).json(updatedBook);
+    } catch (error) {
+      console.log(error.message);
+      return response.status(500).json({ message: error.message });
+    }
+  });
 
   export default router;
   
