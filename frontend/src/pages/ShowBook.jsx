@@ -24,38 +24,53 @@ const ShowBook = () => {
   }, [id]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-blue-50 min-h-screen">
       <BackButton />
-      <h1 className="text-3xl my-4">Show Book</h1>
+      <h1 className="text-3xl my-4 text-indigo-700">Show Book</h1>
 
       {loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4">
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Id</span>
+        <div className="flex flex-col border-2 border-blue-300 rounded-xl shadow-md bg-white w-fit p-6">
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Id</span>
             <span>{book._id}</span>
           </div>
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Title</span>
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Title</span>
             <span>{book.title}</span>
           </div>
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Author</span>
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Author</span>
             <span>{book.author}</span>
           </div>
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Publish Year</span>
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Publish Year</span>
             <span>{book.publishYear}</span>
           </div>
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Create Time</span>
+
+          {/* New fields */}
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Status</span>
+            <span className="capitalize">{book.status || 'Unread'}</span>
+          </div>
+          {book.status === 'read' && (
+            <div className="my-2">
+              <span className="text-xl mr-4 text-gray-600">Read At</span>
+              <span>
+                {book.readAt ? new Date(book.readAt).toLocaleDateString() : 'N/A'}
+              </span>
+            </div>
+          )}
+
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Create Time</span>
             <span>
               {book.createdAt ? new Date(book.createdAt).toString() : 'N/A'}
             </span>
           </div>
-          <div className="my-4">
-            <span className="text-xl mr-4 text-gray-500">Last Update Time</span>
+          <div className="my-2">
+            <span className="text-xl mr-4 text-gray-600">Last Update Time</span>
             <span>
               {book.updatedAt ? new Date(book.updatedAt).toString() : 'N/A'}
             </span>
