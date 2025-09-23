@@ -100,32 +100,36 @@ router.post("/", async (request, response) => {
   
   //route for updating book status
   // PATCH route for updating book status
-router.patch('/:id/status', async (request, response) => {
+// PATCH route for updating book status
+router.patch('/:id/status', async (req, res) => {
     try {
-      const { id } = request.params;
-      const { status } = request.body;
+      const { id } = req.params;
+      const { status } = req.body;
   
-      // Validate the status value
-      if (!['Read', 'Unread', 'Reading'].includes(status)) {
-        return response.status(400).json({ message: 'Invalid status value' });
+      if (!status) {
+        return res.status(400).json({ message: 'Status is required' });
       }
   
-      const updatedBook = await Book.findByIdAndUpdate(
-        id,
-        { status },
-        { new: true } // return updated book
-      );
+      const updateFields = { status };
+      if (status === 'Read') {
+        updateFields.readAt = new Date(); // set when marked as Read
+      } else {
+        updateFields.readAt = null; // clear if not Read
+      }
+  
+      const updatedBook = await Book.findByIdAndUpdate(id, updateFields, { new: true });
   
       if (!updatedBook) {
-        return response.status(404).json({ message: 'Book not found' });
+        return res.status(404).json({ message: 'Book not found' });
       }
   
-      return response.status(200).json(updatedBook);
+      res.json(updatedBook);
     } catch (error) {
-      console.log(error.message);
-      return response.status(500).json({ message: error.message });
+      console.error(error.message);
+      res.status(500).json({ message: error.message });
     }
   });
+  
 
   export default router;
   
