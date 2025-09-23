@@ -26,29 +26,42 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <div className="flex justify-center items-center gap-x-4">
+    <div className="min-h-screen bg-blue-100 p-6"> {/* page background */}
+      {/* toggle buttons */}
+      <div className="flex justify-center items-center gap-x-4 mb-6">
         <button
-          className="bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg"
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            showType === 'table'
+              ? 'bg-sky-500 text-white'
+              : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
+          }`}
           onClick={() => setShowType('table')}
         >
-          Table
+          Table View
         </button>
         <button
-          className="bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg"
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            showType === 'card'
+              ? 'bg-sky-500 text-white'
+              : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
+          }`}
           onClick={() => setShowType('card')}
         >
-          Card
+          Card View
         </button>
       </div>
 
+      {/* header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl my-8">Books List</h1>
+        <h1 className="text-4xl font-bold my-8 text-indigo-900">
+          Books List
+        </h1>
         <Link to="/books/create">
-          <MdOutlineAddBox className="text-sky-800 text-4xl" />
+          <MdOutlineAddBox className="text-indigo-700 hover:text-indigo-900 text-5xl transition-colors" />
         </Link>
       </div>
 
+      {/* content */}
       {loading ? (
         <Spinner />
       ) : showType === 'table' ? (
