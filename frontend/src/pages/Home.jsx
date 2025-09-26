@@ -7,69 +7,99 @@ import BooksTable from '../components/home/BooksTable';
 import BooksCard from '../components/home/BooksCard';
 
 const Home = () => {
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [showType, setShowType] = useState('table');
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showType, setShowType] = useState('table');
 
-    useEffect(() => {
-        setLoading(true);
-        axios
-            .get('http://localhost:5555/books')
-            .then((response) => {
-                setBooks(response.data.data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                setLoading(false);
-            });
-    }, []);
+  const token = localStorage.getItem('token'); // auth token
 
-    return (
-        <div className="min-h-screen bg-blue-100 p-6">
-            {/* toggle buttons */}
-            <div className="flex justify-center items-center gap-x-4 mb-6">
-                <button
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${showType === 'table'
-                        ? 'bg-sky-500 text-white'
-                        : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
-                        }`}
-                    onClick={() => setShowType('table')}
-                >
-                    Table View
-                </button>
-                <button
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${showType === 'card'
-                        ? 'bg-sky-500 text-white'
-                        : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
-                        }`}
-                    onClick={() => setShowType('card')}
-                >
-                    Card View
-                </button>
-            </div>
+  // Fetch books
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:5555/books', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setBooks(response.data.data);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to fetch books. Please login again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            {/* header */}
-            <div className="flex justify-between items-center">
-                <h1 className="text-4xl font-bold my-8 text-indigo-900">
-                    Books List
-                </h1>
-                <Link to="/books/create">
-                    <MdOutlineAddBox className="text-indigo-700 hover:text-indigo-900 text-5xl transition-colors" />
-                </Link>
-            </div>
+  useEffect(() => {
+    fetchBooks();
+  }, []);
 
-            {/* content */}
-            {loading ? (
-                <Spinner />
-            ) : showType === 'table' ? (
-                <BooksTable books={books} setBooks={setBooks} />
-            ) : (
-                <BooksCard books={books} setBooks={setBooks} />
-            )}
+  // Update status
+  const handleStatusChange = async (bookId, newStatus) => {
+    try {
+      await axios.patch(
+        `http://localhost:5555/books/${bookId}/status`,
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setBooks(prevBooks =>
+        prevBooks.map(book =>
+          book._id === bookId ? { ...book, status: newStatus } : book
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update status');
+    }
+  };
 
-        </div>
-    );
+  return (
+    <div className="min-h-screen bg-blue-100 p-6">
+      {/* Toggle buttons */}
+      <div className="flex justify-center items-center gap-x-4 mb-6">
+        <button
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            showType === 'table'
+              ? 'bg-sky-500 text-white'
+              : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
+          }`}
+          onClick={() => setShowType('table')}
+        >
+          Table View
+        </button>
+        <button
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            showType === 'card'
+              ? 'bg-sky-500 text-white'
+              : 'bg-sky-200 text-blue-900 hover:bg-sky-400'
+          }`}
+          onClick={() => setShowType('card')}
+        >
+          Card View
+        </button>
+      </div>
+
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold my-8 text-indigo-900">Books List</h1>
+        <Link to="/books/create">
+          <MdOutlineAddBox className="text-indigo-700 hover:text-indigo-900 text-5xl transition-colors" />
+        </Link>
+      </div>
+
+      {/* Content */}
+      {loading ? (
+        <Spinner />
+      ) : showType === 'table' ? (
+        <BooksTable
+          books={books}
+          setBooks={setBooks}
+          handleStatusChange={handleStatusChange}
+        />
+      ) : (
+        <BooksCard books={books} handleStatusChange={handleStatusChange} />
+      )}
+    </div>
+  );
 };
 
 export default Home;

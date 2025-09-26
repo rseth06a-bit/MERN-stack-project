@@ -10,17 +10,22 @@ const ShowBook = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`http://localhost:5555/books/${id}`)
-      .then((response) => {
+    const fetchBook = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:5555/books/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setBook(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
+        alert('Failed to fetch book. Make sure you are logged in.');
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchBook();
   }, [id]);
 
   return (
@@ -48,13 +53,11 @@ const ShowBook = () => {
             <span className="text-xl mr-4 text-gray-600">Publish Year</span>
             <span>{book.publishYear}</span>
           </div>
-
-          {/* New fields */}
           <div className="my-2">
             <span className="text-xl mr-4 text-gray-600">Status</span>
             <span className="capitalize">{book.status || 'Unread'}</span>
           </div>
-          {book.status === 'read' && (
+          {book.status === 'Read' && (
             <div className="my-2">
               <span className="text-xl mr-4 text-gray-600">Read At</span>
               <span>
@@ -62,7 +65,6 @@ const ShowBook = () => {
               </span>
             </div>
           )}
-
           <div className="my-2">
             <span className="text-xl mr-4 text-gray-600">Create Time</span>
             <span>

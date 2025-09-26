@@ -1,40 +1,47 @@
 import express from "express";
 import cors from "cors";
-import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
-import { Book } from "./models/bookModel.js";
-import booksRoute from './routes/booksRoute.js'
+import { PORT, mongoDBURL } from "./config.js";
+import authRoute from './routes/authRoute.js';
+
+// routes
+import booksRoute from "./routes/booksRoute.js";
+import authRoutes from "./routes/authRoute.js";
+
+// middleware
+import { authMiddleware } from "./middleware/auth.js";
 
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
 
+// CORS
 app.use(cors());
 
-// app.use(
-//     cors({
-//         origin: 'http://localhost:3000',
-//         methods: ['GET','POST','PUT','DELETE'],
-//         allowedHeaders: ['Content-Type'],
-//     })
-// );
-
-app.get("/", (request, response) => {
-  return response.status(200).send("Welcome to MERN stack tutorial");
+// Health check
+app.get("/", (req, res) => {
+  return res.status(200).send("Welcome to MERN stack tutorial");
 });
 
-app.use('/books', booksRoute);
+// Routes
+app.use("/books", booksRoute);
+app.use("/api/auth", authRoutes);
 
+// Example of a protected route
+app.get("/api/protected", authMiddleware, (req, res) => {
+  res.json({ message: `Hello ${req.user.username}, you accessed a protected route!` });
+});
+
+// MongoDB connection
 mongoose
   .connect(mongoDBURL)
   .then(() => {
-    console.log("App connected to database");
+    console.log("✅ App connected to database");
     app.listen(PORT, () => {
-      console.log(`App is listening to port: ${PORT}`);
+      console.log(`🚀 App is listening on port: ${PORT}`);
     });
   })
   .catch((error) => {
-    console.log(error);
+    console.error("❌ MongoDB connection error:", error);
   });
- 
