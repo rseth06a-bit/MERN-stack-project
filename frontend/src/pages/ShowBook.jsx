@@ -15,7 +15,7 @@ const ShowBook = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/books/${id}`,
+          `${process.env.VITE_API_URL}/books/${id}`,
           {
           headers: { Authorization: `Bearer ${token}` },
         });

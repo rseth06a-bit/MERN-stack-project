@@ -16,7 +16,7 @@ const CreateBooks = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${process.env.REACT_APP_API_URL}/books`, data, {
+      await axios.post(`${process.env.VITE_API_URL}/books`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/');

@@ -13,7 +13,7 @@ export default function Register() {
     e.preventDefault();
     setError(""); // reset error on each submit
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, { username, password });
+      await axios.post(`${process.env.VITE_API_URL}/api/auth/register`, { username, password });
       // Redirect to login with a success message
       navigate("/login", { state: { successMessage: "Account successfully created!" } });
     } catch (err) {
