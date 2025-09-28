@@ -3,11 +3,13 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "install-backend": "cd backend && npm install",
-      "install-frontend": "cd frontend && npm install",
-      "build-frontend": "cd frontend && npm run build",
-      "start-backend": "cd backend && npm start",
-      "start": "npm run build-frontend && npm run start-backend"
+        "install-backend": "cd backend && npm install",
+        "install-frontend": "cd frontend && npm install",
+        "build-frontend": "cd frontend && npm run build",
+        "start-backend": "cd backend && npm start",
+        "start": "npm run build-frontend && npm run start-backend"
+    },
+    "dependencies": {
+        "express": "^4.21.2"
     }
-  }
-  
+}
