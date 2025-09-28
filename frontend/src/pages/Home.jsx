@@ -17,7 +17,7 @@ const Home = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5555/books', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/books`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBooks(response.data.data);
@@ -37,7 +37,7 @@ const Home = () => {
   const handleStatusChange = async (bookId, newStatus) => {
     try {
       await axios.patch(
-        `http://localhost:5555/books/${bookId}/status`,
+        `${process.env.REACT_APP_API_URL}/books/${bookId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

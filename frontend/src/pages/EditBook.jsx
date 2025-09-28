@@ -17,7 +17,7 @@ const EditBook = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .get(`http://localhost:5555/books/${id}`, {
+    .get(`${process.env.REACT_APP_API_URL}/books/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -39,7 +39,7 @@ const EditBook = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .put(`http://localhost:5555/books/${id}`, data, {
+      .put(`${process.env.REACT_APP_API_URL}/books/${id}`, data, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

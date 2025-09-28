@@ -14,7 +14,7 @@ const DeleteBook = () => {
     const token = localStorage.getItem('token'); // get JWT token
 
     axios
-      .delete(`http://localhost:5555/books/${id}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/books/${id}`, {
         headers: { Authorization: `Bearer ${token}` }, // send token
       })
       .then(() => {

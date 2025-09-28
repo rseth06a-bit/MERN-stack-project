@@ -14,7 +14,9 @@ const ShowBook = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5555/books/${id}`, {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/books/${id}`,
+          {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBook(response.data);
