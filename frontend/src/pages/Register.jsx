@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css"; // reuse the same CSS file
 import { API } from "../api"; // <-- added import
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -53,7 +54,7 @@ export default function Register() {
           </button>
         </form>
         <p className="login-footer">
-          Already have an account? <a href="/login">Login</a>
+        Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

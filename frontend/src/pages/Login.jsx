@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Login.css"; // import the CSS file
 import { API } from "../api"; // <-- added import
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -66,7 +67,7 @@ export default function Login() {
           </button>
         </form>
         <p className="login-footer">
-          Don't have an account? <a href="/register">Create one</a>
+          Don't have an account? <Link to="/register">Create one</Link>
         </p>
       </div>
     </div>
