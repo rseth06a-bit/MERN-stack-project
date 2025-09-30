@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { API } from '../api'; // <-- updated import
 
 const DeleteBook = () => {
   const [loading, setLoading] = useState(false);
@@ -14,8 +15,8 @@ const DeleteBook = () => {
     const token = localStorage.getItem('token'); // get JWT token
 
     axios
-      .delete(`http://localhost:5555/books/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }, // send token
+      .delete(`${API}/books/${id}`, {  // <-- updated URL
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setLoading(false);

@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../api'; // <-- updated import
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
@@ -16,7 +17,7 @@ const CreateBooks = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5555/books', data, {
+      await axios.post(`${API}/books`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/');

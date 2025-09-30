@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { API } from '../api'; // <-- updated import
 
 const EditBook = () => {
   const [title, setTitle] = useState('');
@@ -17,7 +18,7 @@ const EditBook = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .get(`http://localhost:5555/books/${id}`, {
+      .get(`${API}/books/${id}`, {  // <-- updated URL
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -39,7 +40,7 @@ const EditBook = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .put(`http://localhost:5555/books/${id}`, data, {
+      .put(`${API}/books/${id}`, data, {  // <-- updated URL
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

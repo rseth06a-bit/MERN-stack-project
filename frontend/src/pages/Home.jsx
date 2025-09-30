@@ -5,6 +5,7 @@ import Spinner from "../components/Spinner";
 import { MdOutlineAddBox } from "react-icons/md";
 import BooksTable from "../components/home/BooksTable";
 import BooksCard from "../components/home/BooksCard";
+import { API } from "../api"; // <-- updated import
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -26,7 +27,7 @@ const Home = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5555/books", {
+      const response = await axios.get(`${API}/books`, { // <-- updated URL
         headers: { Authorization: `Bearer ${token}` },
       });
       setBooks(response.data.data);
@@ -48,7 +49,7 @@ const Home = () => {
   const handleStatusChange = async (bookId, newStatus) => {
     try {
       await axios.patch(
-        `http://localhost:5555/books/${bookId}/status`,
+        `${API}/books/${bookId}/status`, // <-- updated URL
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -95,7 +96,6 @@ const Home = () => {
 
         <div className="flex items-center gap-x-4">
           {token ? (
-            // 🔓 Show Logout if logged in
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
               onClick={() => {
@@ -106,7 +106,6 @@ const Home = () => {
               Logout
             </button>
           ) : (
-            // 🔑 Show Login if not logged in
             <button
               className="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600"
               onClick={() => navigate("/login")}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Login.css"; // import the CSS file
+import { API } from "../api"; // <-- added import
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -22,7 +23,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5555/api/auth/login", {
+      const res = await axios.post(`${API}/api/auth/login`, { // <-- updated URL
         username,
         password,
       });

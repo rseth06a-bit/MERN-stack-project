@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css"; // reuse the same CSS file
+import { API } from "../api"; // <-- added import
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ export default function Register() {
     e.preventDefault();
     setError(""); // reset error on each submit
     try {
-      await axios.post("http://localhost:5555/api/auth/register", { username, password });
+      await axios.post(`${API}/api/auth/register`, { username, password }); // <-- updated URL
       // Redirect to login with a success message
       navigate("/login", { state: { successMessage: "Account successfully created!" } });
     } catch (err) {

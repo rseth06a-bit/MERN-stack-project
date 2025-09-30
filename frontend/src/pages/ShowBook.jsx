@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
+import { API } from '../api'; // <-- added import
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
@@ -14,7 +15,7 @@ const ShowBook = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5555/books/${id}`, {
+        const response = await axios.get(`${API}/books/${id}`, { // <-- updated URL
           headers: { Authorization: `Bearer ${token}` },
         });
         setBook(response.data);
